@@ -2,7 +2,6 @@
 
 int main()
 {
-    Test::IsCMakeWorking();
-
+    ppp::Test::IsCMakeWorking();
     return 0;
 }
