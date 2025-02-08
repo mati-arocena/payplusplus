@@ -49,9 +49,10 @@ if (ENABLE_TESTS)
 
     enable_testing()
 
-    file(GLOB_RECURSE TEST_SRC_FILES "tests/*.cpp")
+    file(GLOB_RECURSE TEST_SRC_FILES "tests/*.cpp" "src/*.cpp")
+    list(FILTER TEST_SRC_FILES EXCLUDE REGEX "src/main.cpp")
 
-    add_executable(tests ${TEST_SRC_FILES} ${SRC_FILES})
+    add_executable(tests ${TEST_SRC_FILES})
     target_include_directories(tests PRIVATE ${CMAKE_SOURCE_DIR}/include)
     target_link_libraries(tests PRIVATE gtest gtest_main pthread)
     target_compile_options(tests PRIVATE ${WARNING_FLAGS})

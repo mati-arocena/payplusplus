@@ -39,6 +39,7 @@ ctest
 ## 2024-02-08
 - [x] Fix compilation warnings
 - [x] Do a naive implementation of the methods so the tests passes
-- [ ] Create test setup and tear down with test data
+- [x] Create test setup and tear down with test data
 
 ### Notes
+* The test are compiling with some hardcoded data. For the next steps I would like to read the data from files to add some flexibility. After that I can start to think in better design and performance.

@@ -18,6 +18,10 @@ private:
     float m_increment_percentage;
     std::vector<Employee> m_employees;
 public:
+    Role(std::string department, std::string seniority, float salary, float increment_percentage) :
+        m_department{std::move(department)}, m_seniority{std::move(seniority)}, m_salary{salary}, m_increment_percentage{increment_percentage} 
+    {};
+
     float getSalary() const;
     float getSalaryIncrementPercentage() const;
     
