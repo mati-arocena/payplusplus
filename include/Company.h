@@ -4,7 +4,7 @@
 
 #include <unordered_map>
 #include <string>
-#include <memory>
+#include <optional>
 
 namespace ppp
 {
@@ -12,11 +12,11 @@ namespace ppp
 class Company
 {
 private:
-    std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<Role>>> m_roles;
+    std::unordered_map<std::string, std::unordered_map<std::string, RolePtr>> m_roles;
 public:
-    void addRole(std::shared_ptr<Role> role);
+    void addRole(const RolePtr& role);
     
-    std::shared_ptr<Role> getRole(std::string department, std::string seniority);
+    std::optional<RolePtr> getRole(const std::string& department, const std::string& seniority) const;
 };
 
 } // namespace ppp

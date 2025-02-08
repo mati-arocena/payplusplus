@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace ppp
 {
@@ -24,7 +25,12 @@ public:
 
     int getEmployeeCount() const;
 
-    void addEmployee(const Employee& e);
+    void addEmployee(const Employee& employee);
+
+    std::string getDepartment();
+    std::string getSeniority();
 };
+
+using RolePtr = std::shared_ptr<Role>;
 
 } // namespace ppp
