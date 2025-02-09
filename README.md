@@ -43,3 +43,14 @@ ctest
 
 ### Notes
 * The test are compiling with some hardcoded data. For the next steps I would like to read the data from files to add some flexibility. After that I can start to think in better design and performance.
+
+## 2024-02-09
+- [x] Read data from a text file
+- [ ] Improve API design
+
+### Notes
+* Before focusing on performance I think I'll start by reading the data from a text file so Im able to test with different or big input.
+* Now, I'll try to improve the API for the CEO role, which is a role that doesn't actually have a seniority. Also, in the future we could add more roles with specific properties like contractors.
+    * The solution should also be flexible enough so we can still read from files and add roles dynamically, so I discard things like enums. I still want to treat the roles uniformaly since the behaivor doesn't change, there is only a small variation in the data.
+    * One simple fix could be to just have some sort of composition, where role and seniority as different classes, and seniority could be a pointer. But I don't think this quite matches the problem, the salary increases are associated with specific seniorities in a department, so it would make sense that the seniority has the increasePersentage and salary data. However we would need to treat the CEO in a special way since he also has salary and increase but doesnt have any seniority.
+    * I think I would rather do a subtype for it, and then change Company to accept multiple types.

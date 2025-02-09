@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <string>
 #include <optional>
+#include <memory>
 
 namespace ppp
 {
@@ -18,5 +19,7 @@ public:
     
     std::optional<RolePtr> getRole(const std::string& department, const std::string& seniority) const;
 };
+
+using CompanyPtr = std::shared_ptr<Company>;
 
 } // namespace ppp

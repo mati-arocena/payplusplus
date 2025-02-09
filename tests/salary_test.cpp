@@ -3,86 +3,20 @@
 #include "Company.h"
 #include "Role.h"
 
+#include "utils/Parser.h"
+
 class SalaryTest : public ::testing::Test {
 protected:
     ppp::Company company;
 
     void SetUp() override {
-        auto hrSenior = std::make_shared<ppp::Role>("HR", "Senior", 1500, 0.5f);
-        for (int i = 0; i < 5; ++i) {
-            hrSenior->addEmployee(ppp::Employee());
+        auto maybeCompany = ppp::utils::Parser::parseCSV("../data/tests.csv");
+        if(!maybeCompany.has_value())
+        {
+            FAIL() << "Failed to parse CSV.";
         }
-        company.addRole(hrSenior);
 
-        auto hrSemiSenior = std::make_shared<ppp::Role>("HR", "Semi Senior", 1000, 0.2f);
-        for (int i = 0; i < 2; ++i) {
-            hrSemiSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(hrSemiSenior);
-
-        auto hrJunior = std::make_shared<ppp::Role>("HR", "Junior", 500, 0.05f);
-        for (int i = 0; i < 13; ++i) {
-            hrJunior->addEmployee(ppp::Employee());
-        }
-        company.addRole(hrJunior);
-
-        auto engSenior = std::make_shared<ppp::Role>("Engineering", "Senior", 5000, 0.1f);
-        for (int i = 0; i < 50; ++i) {
-            engSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(engSenior);
-
-        auto engSemiSenior = std::make_shared<ppp::Role>("Engineering", "Semi Senior", 3000, 0.07f);
-        for (int i = 0; i < 68; ++i) {
-            engSemiSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(engSemiSenior);
-
-        auto engJunior = std::make_shared<ppp::Role>("Engineering", "Junior", 1500, 0.05f);
-        for (int i = 0; i < 32; ++i) {
-            engJunior->addEmployee(ppp::Employee());
-        }
-        company.addRole(engJunior);
-
-        auto artistSenior = std::make_shared<ppp::Role>("Artist", "Senior", 2000, 0.05f);
-        for (int i = 0; i < 5; ++i) {
-            artistSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(artistSenior);
-
-        auto artistSemiSenior = std::make_shared<ppp::Role>("Artist", "Semi Senior", 1200, 0.025f);
-        for (int i = 0; i < 20; ++i) {
-            artistSemiSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(artistSemiSenior);
-
-        auto designSenior = std::make_shared<ppp::Role>("Design", "Senior", 2000, 0.07f);
-        for (int i = 0; i < 10; ++i) {
-            designSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(designSenior);
-
-        auto designJunior = std::make_shared<ppp::Role>("Design", "Junior", 800, 0.04f);
-        for (int i = 0; i < 15; ++i) {
-            designJunior->addEmployee(ppp::Employee());
-        }
-        company.addRole(designJunior);
-
-        auto pmSenior = std::make_shared<ppp::Role>("PM", "Senior", 4000, 0.1f);
-        for (int i = 0; i < 10; ++i) {
-            pmSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(pmSenior);
-
-        auto pmSemiSenior = std::make_shared<ppp::Role>("PM", "Semi Senior", 2400, 0.05f);
-        for (int i = 0; i < 15; ++i) {
-            pmSemiSenior->addEmployee(ppp::Employee());
-        }
-        company.addRole(pmSemiSenior);
-
-        auto ceo = std::make_shared<ppp::Role>("CEO", "CEO", 2000, 1.0f);
-        ceo->addEmployee(ppp::Employee());
-        company.addRole(ceo);
+        company = *maybeCompany.value();
     }
 };
 

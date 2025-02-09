@@ -1,0 +1,14 @@
+Department,Seniority,Salary,IncrementPercentage,EmployeeCount
+HR,Senior,1500,0.5,5
+HR,Semi Senior,1000,0.2,2
+HR,Junior,500,0.05,13
+Engineering,Senior,5000,0.1,50
+Engineering,Semi Senior,3000,0.07,68
+Engineering,Junior,1500,0.05,32
+Artist,Senior,2000,0.05,5
+Artist,Semi Senior,1200,0.025,20
+Design,Senior,2000,0.07,10
+Design,Junior,800,0.04,15
+PM,Senior,4000,0.1,10
+PM,Semi Senior,2400,0.05,15
+CEO,CEO,2000,1.0,1
