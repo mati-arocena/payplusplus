@@ -6,6 +6,7 @@
 #include <string>
 #include <optional>
 #include <memory>
+#include <type_traits>
 
 namespace ppp
 {
@@ -13,13 +14,28 @@ namespace ppp
 class Company
 {
 private:
-    std::unordered_map<std::string, std::unordered_map<std::string, RolePtr>> m_roles;
+    std::unordered_map<RoleKey, RolePtr> m_roles;
 public:
-    void addRole(const RolePtr& role);
+    template<typename T>
+    void addRole(const std::shared_ptr<T>& role)
+    {
+        RoleKey key;
+        if constexpr (std::is_same_v<T, SeniorityRole>)
+        {
+            key = {role->getDepartment(), role->getSeniority()};
+        }
+        else
+        {
+            key = {role->getDepartment(), std::nullopt};
+        }
+        m_roles[key] = role;
+    }
     
-    std::optional<RolePtr> getRole(const std::string& department, const std::string& seniority) const;
+    std::optional<RolePtr> getRole(const RoleKey& key) const;
 };
 
 using CompanyPtr = std::shared_ptr<Company>;
 
 } // namespace ppp
+
+

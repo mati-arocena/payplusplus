@@ -53,13 +53,25 @@ std::optional<ppp::CompanyPtr> ppp::utils::Parser::parseCSV(const std::string &f
             return std::nullopt;
         }
 
-        auto role = std::make_shared<ppp::Role>(department, seniority, salary, increment);
+
+        RolePtr role;
+        if (seniority == "None")
+        {
+            role = std::make_shared<ppp::Role>(department, salary, increment);
+            company.addRole(role);
+        }
+        else
+        {
+            std::shared_ptr<SeniorityRole> thisRole = std::make_shared<ppp::SeniorityRole>(department, salary, increment, seniority);
+            role = thisRole;
+            company.addRole(thisRole);
+        }
+
         for (int i = 0; i < employeeCount; ++i)
         {
             ppp::Employee employee;
             role->addEmployee(employee);
         }
-        company.addRole(role);
     }
 
     file.close();
