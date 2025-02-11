@@ -59,7 +59,7 @@ ctest
 
 ## 2024-02-10
 - [x] Create a script to generate random data
-- [ ] Create a RAII class to measure time
+- [x] Create a RAII class to measure time
 
 ### Notes
 * Today I want to focus on creating the tools to allow me do performance test. First I'd like to test in scenarios were we have a lot of data. For that I'll create a small script to generate it. After that I'll create a simple profiler so I can instrument the code. Finally, I'll also will do some VTune passes, but I want to have the timers in case I want to profile a specific part of the code.

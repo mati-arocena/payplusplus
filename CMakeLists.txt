@@ -4,11 +4,12 @@ project(PayPlusPlus)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+option(ENABLE_DEBUG_BUILD "Enable Debug Build" ON)
+option(ENABLE_PERFORMANCE_TESTING "Enable Performance Testing" OFF)
+
 option(ENABLE_THREAD_SANITIZER "Enable Thread Sanitizer" OFF)
 option(ENABLE_MEMORY_SANITIZER "Enable Memory Sanitizer" OFF)
-option(ENABLE_PERFORMANCE_TESTING "Enable Performance Testing" OFF)
 option(ENABLE_TESTS "Enable Tests" ON)
-option(ENABLE_DEBUG_BUILD "Enable Debug Build" OFF)
 
 if (ENABLE_THREAD_SANITIZER)
     set(SANITIZER_FLAGS "-fsanitize=thread")
@@ -18,8 +19,13 @@ else()
     set(SANITIZER_FLAGS "")
 endif()
 
-if (ENABLE_PERFORMANCE_TESTING)
-    set(PERFORMANCE_FLAGS "-g" "-O2")
+if(ENABLE_DEBUG_BUILD)
+    set(CMAKE_BUILD_TYPE "Debug")
+    add_compile_options(-g -O0)
+    add_compile_definitions(DEBUG_BUILD)
+elseif (ENABLE_PERFORMANCE_TESTING)
+    add_compile_options(-g -O0)
+    add_compile_definitions(PERF_PROFILING)
 else()
     set(PERFORMANCE_FLAGS "")
 endif()
@@ -28,11 +34,7 @@ set(WARNING_FLAGS "-Wall" "-Wextra" "-Werror")
 
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
 
-if(ENABLE_DEBUG_BUILD)
-  set(CMAKE_BUILD_TYPE "Debug")
-  add_compile_options(-g -O0)
-  add_compile_definitions(DEBUG_BUILD)
-endif()
+
 
 add_executable(main ${SRC_FILES})
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/include)

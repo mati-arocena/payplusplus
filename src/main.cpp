@@ -1,6 +1,8 @@
 #include "utils/Parser.h"
+#include "utils/Profiler.h"
 
 int main()
 {
-    ppp::utils::Parser::parseCSV("../data/tests.csv");
+    SCOPED_PROF("TEST");
+    ppp::utils::Parser::parseCSV("../data/stress_test.csv");
 }
