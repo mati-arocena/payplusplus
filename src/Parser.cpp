@@ -1,10 +1,11 @@
 #include "utils/Parser.h"
+#include "utils/Profiler.h"
 
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
-std::optional<ppp::CompanyPtr> ppp::utils::Parser::parseCSV(const std::string &filename)
+std::optional<ppp::Company> ppp::utils::Parser::parseCSV(const std::string &filename)
 {
     std::ifstream file(filename);
     if (!file.is_open())
@@ -75,5 +76,5 @@ std::optional<ppp::CompanyPtr> ppp::utils::Parser::parseCSV(const std::string &f
     }
 
     file.close();
-    return std::make_shared<ppp::Company>(company);
+    return company;
 }

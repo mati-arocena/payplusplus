@@ -16,6 +16,9 @@ class Company
 private:
     std::unordered_map<RoleKey, RolePtr> m_roles;
 public:
+    // Increase salaries for all roles
+    void incrementSalaries();
+
     template<typename T>
     void addRole(const std::shared_ptr<T>& role)
     {

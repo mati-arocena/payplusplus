@@ -63,3 +63,12 @@ ctest
 
 ### Notes
 * Today I want to focus on creating the tools to allow me do performance test. First I'd like to test in scenarios were we have a lot of data. For that I'll create a small script to generate it. After that I'll create a simple profiler so I can instrument the code. Finally, I'll also will do some VTune passes, but I want to have the timers in case I want to profile a specific part of the code.
+
+## 2024-02-12
+- [ ] Instument and stress test
+- [ ] Make a VTune pass
+- [ ] Optimize
+
+### Notes
+* I created a profiling branch to show and explain each change, I wont upload all intermediatte steps to the main branch. Only the optimizations that we need.
+* Instrumenting main in parse data and in salary increase it shows that there is room for improvement in both, but most of the time is reading the data. It makes sense because there Im creating all the objects, I'll take a closer look at the function.

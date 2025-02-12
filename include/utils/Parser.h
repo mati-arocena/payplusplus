@@ -10,7 +10,7 @@ namespace ppp::utils
 class Parser
 {
 public:
-    static std::optional<CompanyPtr> parseCSV(const std::string& filename);
+    static std::optional<Company> parseCSV(const std::string& filename);
 };
 
 } // namespace ppp::utils
