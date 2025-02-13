@@ -2,20 +2,24 @@
 #include "utils/Parser.h"
 #include "utils/Profiler.h"
 
+#include <tuple>
+
 int main()
 {
-    std::optional<ppp::Company> maybeCompany;
-    {
-        SCOPED_PROF("Reading data");
-        maybeCompany = ppp::utils::Parser::parseCSV("../data/stress_test.csv");
-    }
+    auto csv = ppp::utils::Parser::parseCSV<std::string, std::string, float, float, int>("../data/tests.csv");
 
-    {
-        SCOPED_PROF("Applying salary increase");
-        if (maybeCompany.has_value())
-        {
-            maybeCompany->incrementSalaries();
-        }
-    }
+    // std::optional<ppp::Company> maybeCompany;
+    // {
+    //     SCOPED_PROF("Reading data");
+    //     maybeCompany = ppp::utils::Parser::parseCSV("../data/stress_test.csv");
+    // }
+
+    // {
+    //     SCOPED_PROF("Applying salary increase");
+    //     if (maybeCompany.has_value())
+    //     {
+    //         maybeCompany->incrementSalaries();
+    //     }
+    // }
 
 }

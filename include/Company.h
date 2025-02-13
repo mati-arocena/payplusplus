@@ -16,6 +16,9 @@ class Company
 private:
     std::unordered_map<RoleKey, RolePtr> m_roles;
 public:
+    Company() = default;
+    Company(const std::string& file_path);
+
     // Increase salaries for all roles
     void incrementSalaries();
 

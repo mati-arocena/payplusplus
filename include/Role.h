@@ -55,7 +55,7 @@ public:
     {};
 
 
-    std::string getSeniority() const
+    inline std::string getSeniority() const
     {
         return m_seniority;
     }

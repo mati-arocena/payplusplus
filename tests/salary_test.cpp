@@ -10,13 +10,7 @@ protected:
     ppp::Company company;
 
     void SetUp() override {
-        auto maybeCompany = ppp::utils::Parser::parseCSV("../data/tests.csv");
-        if(!maybeCompany.has_value())
-        {
-            FAIL() << "Failed to parse CSV.";
-        }
-
-        company = *maybeCompany.value();
+        company = std::move(ppp::Company("../data/tests.csv"));
     }
 };
 

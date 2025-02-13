@@ -72,3 +72,4 @@ ctest
 ### Notes
 * I created a profiling branch to show and explain each change, I wont upload all intermediatte steps to the main branch. Only the optimizations that we need.
 * Instrumenting main in parse data and in salary increase it shows that there is room for improvement in both, but most of the time is reading the data. It makes sense because there Im creating all the objects, I'll take a closer look at the function.
+* Before keep diging into performance, I would like to improve a bit the way Im parsing the file. I want to have a generic file parser that return a vector for each line with the proper type. Also, I'd like to localize things specific to the company or bussiness logic in general outside of the parser. After decopuling the parser, I'll profile the bussiness logic instead of the reading part.
