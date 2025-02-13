@@ -41,7 +41,10 @@ public:
     
     void increaseSalary();
 
-    void addEmployee(const Employee& employee);
+    inline void createEmployees(int count)
+    {
+        m_employees = std::vector<Employee>(count);
+    };
 };
 
 class SeniorityRole : public Role

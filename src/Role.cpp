@@ -9,8 +9,3 @@ int ppp::Role::getEmployeeCount() const
 {
     return static_cast<int>(m_employees.size());
 }
-
-void ppp::Role::addEmployee(const Employee& employee)
-{
-    m_employees.push_back(employee);
-}

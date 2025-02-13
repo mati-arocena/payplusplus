@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 project(PayPlusPlus)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-option(ENABLE_DEBUG_BUILD "Enable Debug Build" ON)
-option(ENABLE_PERFORMANCE_TESTING "Enable Performance Testing" OFF)
+option(ENABLE_DEBUG_BUILD "Enable Debug Build" OFF)
+option(ENABLE_PERFORMANCE_TESTING "Enable Performance Testing" ON)
 
 option(ENABLE_THREAD_SANITIZER "Enable Thread Sanitizer" OFF)
 option(ENABLE_MEMORY_SANITIZER "Enable Memory Sanitizer" OFF)

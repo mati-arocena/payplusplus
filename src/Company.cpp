@@ -17,22 +17,17 @@ ppp::Company::Company(const std::string& file_path)
         int employee_count = std::get<4>(row);
 
         RolePtr role;
-        if (seniority == "None")
+        if (seniority == "None") [[unlikely]]
         {
             role = std::make_shared<Role>(department, salary, increment_percentage);
             addRole(role);
         }
-        else
+        else [[likely]]
         {
             role = std::make_shared<SeniorityRole>(department, salary, increment_percentage, seniority);
             addRole(std::static_pointer_cast<SeniorityRole>(role));
         }
-        
-
-        for (int i = 0; i < employee_count; i++)
-        {
-            role->addEmployee({});
-        }
+        role->createEmployees(employee_count);
     }
 }
 
