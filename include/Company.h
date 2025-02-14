@@ -14,21 +14,26 @@ namespace ppp
 class Company
 {
 private:
-    std::unordered_map<RoleKey, RolePtr> m_roles;
+    std::vector<SeniorityRole> m_seniority_roles;
+    std::vector<Role> m_roles;
+
 public:
+    Company(const std::string& file_path);
+
+    // Increase salaries for all roles
+    void incrementSalaries();
+
     template<typename T>
-    void addRole(const std::shared_ptr<T>& role)
+    void addRole(const T& role)
     {
-        RoleKey key;
-        if constexpr (std::is_same_v<T, SeniorityRole>)
+        if constexpr (std::is_same_v<SeniorityRole, T>)
         {
-            key = {role->getDepartment(), role->getSeniority()};
+            m_seniority_roles.push_back(role);
         }
-        else
+        else if constexpr (std::is_same_v<Role, T>)
         {
-            key = {role->getDepartment(), std::nullopt};
+            m_roles.push_back(role);
         }
-        m_roles[key] = role;
     }
     
     std::optional<RolePtr> getRole(const RoleKey& key) const;

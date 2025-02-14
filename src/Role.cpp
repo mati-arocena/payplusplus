@@ -5,12 +5,12 @@ void ppp::Role::increaseSalary()
     m_salary += m_salary * m_increment_percentage;
 }
 
-int ppp::Role::getEmployeeCount() const
+bool ppp::Role::matchesKey(const RoleKey& key) const
 {
-    return static_cast<int>(m_employees.size());
+    return !key.seniority.has_value() && m_department == key.department;
 }
 
-void ppp::Role::addEmployee(const Employee& employee)
+bool ppp::SeniorityRole::matchesKey(const RoleKey& key) const
 {
-    m_employees.push_back(employee);
+    return key.seniority.has_value() && m_seniority == *key.seniority && m_department == key.department;
 }
