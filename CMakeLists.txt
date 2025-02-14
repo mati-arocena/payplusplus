@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 option(ENABLE_DEBUG_BUILD "Enable Debug Build" OFF)
-option(ENABLE_PERFORMANCE_TESTING "Enable Performance Testing" ON)
+option(ENABLE_PERFORMANCE_TESTING "Enable Performance Testing" OFF)
 
 option(ENABLE_THREAD_SANITIZER "Enable Thread Sanitizer" OFF)
 option(ENABLE_MEMORY_SANITIZER "Enable Memory Sanitizer" OFF)
@@ -27,7 +27,7 @@ elseif (ENABLE_PERFORMANCE_TESTING)
     add_compile_options(-g -O2)
     add_compile_definitions(PERF_PROFILING)
 else()
-    set(PERFORMANCE_FLAGS "")
+    add_compile_options(-O2)
 endif()
 
 set(WARNING_FLAGS "-Wall" "-Wextra" "-Werror")
@@ -36,7 +36,7 @@ file(GLOB_RECURSE SRC_FILES "src/*.cpp")
 
 add_executable(main ${SRC_FILES})
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_compile_options(main PRIVATE ${SANITIZER_FLAGS} ${PERFORMANCE_FLAGS} ${WARNING_FLAGS})
+target_compile_options(main PRIVATE ${SANITIZER_FLAGS} ${WARNING_FLAGS})
 target_link_options(main PRIVATE ${SANITIZER_FLAGS})
 
 set_target_properties(main PROPERTIES 

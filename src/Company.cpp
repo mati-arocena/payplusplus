@@ -3,69 +3,78 @@
 #include "utils/Parser.h"
 #include "utils/Profiler.h"
 
-#include <thread>
+#include <algorithm>
+#include <cmath>
 
-ppp::Company::Company(const std::string& file_path)
+namespace {
+    constexpr double SENIORITY_RATIO = 0.9;
+    constexpr double ROLE_RATIO = 0.1;
+}
+
+ppp::Company::Company(const std::string &file_path)
 {
     auto rows = utils::Parser::parseCSV<std::string, std::string, float, float, int>(file_path);
     
     SCOPED_PROF("Company::Company");
+    
+    m_seniority_roles.reserve(std::ceil(static_cast<double>(rows.size()) * SENIORITY_RATIO));
+    m_roles.reserve(std::ceil(static_cast<double>(rows.size()) * ROLE_RATIO));
+    
+    for (auto& row : rows)
+    {
+        std::string department = std::get<0>(row);
+        std::string seniority = std::get<1>(row);
+        float salary = std::get<2>(row);
+        float increment_percentage = std::get<3>(row);
+        int employee_count = std::get<4>(row);
 
-    m_roles.reserve(rows.size());
-
-    unsigned int numThreads = std::thread::hardware_concurrency();
-    std::vector<std::thread> threads;
-    auto chunkSize = (rows.size() + numThreads - 1) / numThreads;
-
-    for (unsigned int i = 0; i < numThreads; ++i) {
-        threads.emplace_back([this, &rows, i, chunkSize]() {
-            auto start = rows.begin() + i * chunkSize;
-            auto end = (i == std::thread::hardware_concurrency() - 1) ? rows.end() : start + chunkSize;
-            for (auto it = start; it != end; ++it) {
-                std::string department = std::get<0>(*it);
-                std::string seniority = std::get<1>(*it);
-                float salary = std::get<2>(*it);
-                float increment_percentage = std::get<3>(*it);
-                int employee_count = std::get<4>(*it);
-
-                RolePtr role;
-                if (seniority == "None")
-                {
-                    role = std::make_shared<Role>(department, salary, increment_percentage);
-                    addRole(role);
-                }
-                else
-                {
-                    role = std::make_shared<SeniorityRole>(department, salary, increment_percentage, seniority);
-                    addRole(std::static_pointer_cast<SeniorityRole>(role));
-                }
-                role->createEmployees(employee_count);
-            }
-        });
-    }
-
-    for (auto& t : threads) {
-        t.join();
+        if (seniority == "None")
+        {
+            Role role(department, salary, increment_percentage, employee_count);
+            addRole(role);
+        }
+        else
+        {
+            SeniorityRole role(department, salary, increment_percentage, employee_count, seniority);
+            addRole(role);
+        }
     }
 }
 
 void ppp::Company::incrementSalaries()
 {
     SCOPED_PROF("Company::incrementSalaries");
-    for(const auto& roles_it : m_roles)
+    for(auto& role : m_seniority_roles)
     {
-        roles_it.second->increaseSalary();
+        role.increaseSalary();
+    }
+    for(auto& role : m_roles)
+    {
+        role.increaseSalary();
     }
 }
 
 std::optional<ppp::RolePtr> ppp::Company::getRole(const RoleKey &key) const
 {
-    std::shared_lock<std::shared_mutex> lock(m_roles_mtx);
+    auto seniority_roles_it = std::find_if(m_seniority_roles.begin(), m_seniority_roles.end(),
+        [&key](const SeniorityRole& role) {
+             return role.matchesKey(key); 
+        });
 
-    auto roles_it = m_roles.find(key);
-    if(roles_it == m_roles.end())
+    if (seniority_roles_it != m_seniority_roles.end())
     {
-        return std::nullopt;
+        return std::make_shared<ppp::SeniorityRole>(*seniority_roles_it);
     }
-    return roles_it->second;
+
+    auto roles_it = std::find_if(m_roles.begin(), m_roles.end(),
+        [&key](const Role& role) {
+             return role.matchesKey(key); 
+        });
+
+    if (roles_it != m_roles.end())
+    {
+        return std::make_shared<ppp::Role>(*roles_it);
+    }
+
+    return std::nullopt;    
 }
