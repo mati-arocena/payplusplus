@@ -22,6 +22,7 @@ ctest
 * Introduced Role, Employee, and Company classes. Later optimized by attaching an employee count directly to Role to avoid object overhead.
 
 ### Performance Optimization
+* Created a stress test with 10000 roles using a python script to use in profiling.
 * Reduced creation time from ~10000ms to 80ms and salary updates from ~95ms to 13ms.
     * Switched from unordered maps to vectors for better memory locality.
     * Removed unnecessary object creation and used preallocation where possible.
