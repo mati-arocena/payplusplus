@@ -7,6 +7,8 @@
 #include <optional>
 #include <memory>
 #include <type_traits>
+#include <shared_mutex>
+#include <mutex>
 
 namespace ppp
 {
@@ -15,6 +17,9 @@ class Company
 {
 private:
     std::unordered_map<RoleKey, RolePtr> m_roles;
+
+    mutable std::shared_mutex m_roles_mtx;
+    
 public:
     Company() = default;
     Company(const std::string& file_path);
@@ -25,6 +30,7 @@ public:
     template<typename T>
     void addRole(const std::shared_ptr<T>& role)
     {
+        std::unique_lock<std::shared_mutex> lock(m_roles_mtx);
         RoleKey key;
         if constexpr (std::is_same_v<T, SeniorityRole>)
         {

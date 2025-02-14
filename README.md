@@ -65,9 +65,9 @@ ctest
 * Today I want to focus on creating the tools to allow me do performance test. First I'd like to test in scenarios were we have a lot of data. For that I'll create a small script to generate it. After that I'll create a simple profiler so I can instrument the code. Finally, I'll also will do some VTune passes, but I want to have the timers in case I want to profile a specific part of the code.
 
 ## 2024-02-12
-- [ ] Instument and stress test
+- [x] Instument and stress test
+- [x] Optimize
 - [ ] Make a VTune pass
-- [ ] Optimize
 
 ### Notes
 * I created a profiling branch to show and explain each change, I wont upload all intermediatte steps to the main branch. Only the optimizations that we need.
@@ -76,3 +76,12 @@ ctest
 * After the refactor, only profiling the construction of the company and the increase of salaries we get 9979.03 ms for the construction and 112.769 ms for incrementing all salaries.
     * I tried to remove the employee creation that we were maintaining for future flexibility and the construction went  to 1142.55 ms. Preallocating the whole vector gives a good middle point of 2299.17 ms. But if we really want to go downt to 1142.55 ms we could make employee count just an attribute of the role.
     * I tried to bump the version to C++20 so I can use [[likely]] and [[unlikely]] for the branch I have in creation where the "None" case is not so common for the data but it turned out to be worse (3267.4 ms).
+    * The only other way I can think at the moment I can optimize the creation is with preallocated roles. Or as we said before by making the employees just a role number. 
+* For the time being I'll focus on salary increse, as I think there are some low-hanging fruits. 
+
+## 2024-02-12
+- [ ] Make VTune pass
+
+### Notes
+* I overlooked a big one. I forgot to activate optimizations when compiling in performance mode. That gave a big boost on perf, leaving it at 692.771 ms for creation and 95.6345 ms for increasing the salaries.
+* I tried reading the rows vector in chunks with a shared mutex and process it in parallel but it was actually worse. Im assuming thats because of contention so I'll try a concurrent map

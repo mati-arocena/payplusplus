@@ -24,7 +24,7 @@ if(ENABLE_DEBUG_BUILD)
     add_compile_options(-g -O0)
     add_compile_definitions(DEBUG_BUILD)
 elseif (ENABLE_PERFORMANCE_TESTING)
-    add_compile_options(-g -O0)
+    add_compile_options(-g -O2)
     add_compile_definitions(PERF_PROFILING)
 else()
     set(PERFORMANCE_FLAGS "")
@@ -33,8 +33,6 @@ endif()
 set(WARNING_FLAGS "-Wall" "-Wextra" "-Werror")
 
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
-
-
 
 add_executable(main ${SRC_FILES})
 target_include_directories(main PRIVATE ${CMAKE_SOURCE_DIR}/include)

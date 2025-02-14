@@ -7,11 +7,7 @@
 
 class SalaryTest : public ::testing::Test {
 protected:
-    ppp::Company company;
-
-    void SetUp() override {
-        company = std::move(ppp::Company("../data/tests.csv"));
-    }
+    ppp::Company company{"../data/tests.csv"};
 };
 
 TEST_F(SalaryTest, EmployeeCount) {
